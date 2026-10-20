@@ -1,0 +1,6 @@
+{
+  "name": "_chilepeppers — A Day in the Life",
+  "description": "An interactive vertical-scroll portfolio by _chilepeppers featuring dynamic diurnal atmosphere transitions and tactile interactive scenes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
