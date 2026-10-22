@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { DayPhase } from '../types/portfolio';
 import { playForestChime } from '../utils/audio';
+import { mulberry32, randBetween } from '../utils/random';
 
 interface ForestCanopyProps {
   phase: DayPhase;
@@ -42,15 +43,15 @@ export const ForestCanopy: React.FC<ForestCanopyProps> = ({
   const getForestColors = () => {
     if (phase === 'dawn') {
       return {
-        farCanopy: '#581C87',     // deep morning violet-amber haze
-        midTrees: '#451A03',      // warm redwood amber
-        midFoliage: '#78350F',
+        farCanopy: '#14532D',     // deep morning violet-amber haze
+        midTrees: '#166534',      // warm redwood amber
+        midFoliage: '#15803D',
         foreTrunks: '#2E1002',
-        foreBoughs: '#3F1703',
-        understory: '#2A0E02',
+        foreBoughs: '#047857',
+        understory: '#022C22',
         needleHighlight: '#FDE68A',
         mist: 'rgba(254, 215, 170, 0.35)',
-        fernLeaf: '#3F1703',
+        fernLeaf: '#047857',
       };
     }
     if (phase === 'morning') {
@@ -81,28 +82,28 @@ export const ForestCanopy: React.FC<ForestCanopyProps> = ({
     }
     if (phase === 'golden') {
       return {
-        farCanopy: '#7C2D12',     // glowing amber sunset forest
-        midTrees: '#9A3412',
-        midFoliage: '#C2410C',
+        farCanopy: '#14532D',     // glowing amber sunset forest
+        midTrees: '#15803D',
+        midFoliage: '#166534',
         foreTrunks: '#3E1303',
-        foreBoughs: '#431407',
-        understory: '#260B02',
+        foreBoughs: '#065F46',
+        understory: '#022C22',
         needleHighlight: '#FDE047',
         mist: 'rgba(254, 215, 170, 0.4)',
-        fernLeaf: '#7C2D12',
+        fernLeaf: '#14532D',
       };
     }
     // Night
     return {
       farCanopy: '#0F172A',     // nocturnal dark indigo
-      midTrees: '#090E17',
-      midFoliage: '#0A1322',
+      midTrees: '#052E16',
+      midFoliage: '#064E3B',
       foreTrunks: '#020617',
-      foreBoughs: '#030814',
+      foreBoughs: '#022C22',
       understory: '#010307',
       needleHighlight: '#94A3B8',
       mist: 'rgba(30, 27, 75, 0.3)',
-      fernLeaf: '#06101E',
+      fernLeaf: '#064E3B',
     };
   };
 
@@ -208,90 +209,38 @@ export const ForestCanopy: React.FC<ForestCanopyProps> = ({
     return d;
   };
 
-  // Diverse natural tree populations across the 1920px landscape
-  // Notice varied heights, widths, species distributions, and natural groves
-  const distantRidgePines = [
-    { x: 30, h: 85, w: 22 },
-    { x: 65, h: 95, w: 25 },
-    { x: 105, h: 80, w: 20 },
-    { x: 145, h: 105, w: 26 },
-    { x: 185, h: 90, w: 24 },
-    { x: 230, h: 110, w: 28 },
-    { x: 275, h: 95, w: 25 },
-    { x: 320, h: 115, w: 29 },
-    { x: 365, h: 85, w: 22 },
-    { x: 410, h: 105, w: 27 },
-    { x: 460, h: 120, w: 30 },
-    { x: 510, h: 95, w: 25 },
-    { x: 560, h: 110, w: 28 },
-    { x: 610, h: 88, w: 23 },
-    { x: 660, h: 118, w: 30 },
-    { x: 710, h: 100, w: 26 },
-    { x: 760, h: 122, w: 31 },
-    { x: 810, h: 90, w: 24 },
-    { x: 860, h: 115, w: 29 },
-    { x: 910, h: 105, w: 26 },
-    { x: 960, h: 125, w: 32 },
-    { x: 1010, h: 92, w: 24 },
-    { x: 1060, h: 118, w: 30 },
-    { x: 1110, h: 100, w: 25 },
-    { x: 1160, h: 124, w: 31 },
-    { x: 1210, h: 88, w: 23 },
-    { x: 1260, h: 115, w: 28 },
-    { x: 1310, h: 95, w: 25 },
-    { x: 1360, h: 120, w: 30 },
-    { x: 1410, h: 102, w: 26 },
-    { x: 1460, h: 125, w: 31 },
-    { x: 1510, h: 90, w: 24 },
-    { x: 1560, h: 116, w: 29 },
-    { x: 1610, h: 98, w: 25 },
-    { x: 1660, h: 122, w: 30 },
-    { x: 1710, h: 92, w: 24 },
-    { x: 1760, h: 115, w: 28 },
-    { x: 1810, h: 105, w: 26 },
-    { x: 1860, h: 120, w: 30 },
-    { x: 1900, h: 95, w: 24 },
-  ];
+  // Seeded random tree populations across the 1920px landscape
+  const midgroundFirs = useMemo(() => {
+    const r = mulberry32(1337);
+    const trees: { x: number; h: number; w: number; lean: number }[] = [];
+    let x = randBetween(r, 10, 60);
+    while (x < 1920) {
+      trees.push({
+        x: Math.round(x),
+        h: Math.round(randBetween(r, 125, 215)),
+        w: Math.round(randBetween(r, 38, 62)),
+        lean: Math.round(randBetween(r, -3, 3)),
+      });
+      x += randBetween(r, 55, 115);
+    }
+    return trees;
+  }, []);
 
-  const midgroundFirs = [
-    { x: 50, h: 140, w: 42, lean: 2 },
-    { x: 120, h: 165, w: 48, lean: -3 },
-    { x: 200, h: 135, w: 40, lean: 1 },
-    { x: 280, h: 175, w: 52, lean: -2 },
-    { x: 350, h: 150, w: 45, lean: 3 },
-    { x: 440, h: 185, w: 54, lean: -1 },
-    { x: 520, h: 145, w: 44, lean: 2 },
-    { x: 600, h: 170, w: 50, lean: -3 },
-    { x: 680, h: 195, w: 58, lean: 1 },
-    { x: 770, h: 155, w: 46, lean: -2 },
-    { x: 850, h: 180, w: 52, lean: 2 },
-    { x: 940, h: 205, w: 60, lean: -1 },
-    { x: 1030, h: 160, w: 48, lean: 3 },
-    { x: 1120, h: 190, w: 55, lean: -2 },
-    { x: 1200, h: 150, w: 45, lean: 1 },
-    { x: 1290, h: 185, w: 54, lean: -3 },
-    { x: 1380, h: 165, w: 49, lean: 2 },
-    { x: 1470, h: 200, w: 58, lean: -1 },
-    { x: 1560, h: 155, w: 46, lean: 3 },
-    { x: 1650, h: 180, w: 52, lean: -2 },
-    { x: 1740, h: 160, w: 48, lean: 1 },
-    { x: 1830, h: 190, w: 56, lean: -2 },
-    { x: 1905, h: 145, w: 44, lean: 2 },
-  ];
-
-  const foregroundCanopyGiants = [
-    { x: 90, h: 220, w: 68, lean: 4 },
-    { x: 240, h: 245, w: 76, lean: -3 },
-    { x: 400, h: 215, w: 66, lean: 2 },
-    { x: 570, h: 260, w: 82, lean: -4 },
-    { x: 730, h: 235, w: 72, lean: 3 },
-    { x: 900, h: 275, w: 88, lean: -2 },
-    { x: 1080, h: 240, w: 75, lean: 4 },
-    { x: 1250, h: 270, w: 84, lean: -3 },
-    { x: 1420, h: 230, w: 70, lean: 2 },
-    { x: 1600, h: 265, w: 82, lean: -4 },
-    { x: 1780, h: 245, w: 76, lean: 3 },
-  ];
+  const foregroundCanopyGiants = useMemo(() => {
+    const r = mulberry32(90210);
+    const trees: { x: number; h: number; w: number; lean: number }[] = [];
+    let x = randBetween(r, 30, 140);
+    while (x < 1900) {
+      trees.push({
+        x: Math.round(x),
+        h: Math.round(randBetween(r, 205, 285)),
+        w: Math.round(randBetween(r, 62, 92)),
+        lean: Math.round(randBetween(r, -4, 4)),
+      });
+      x += randBetween(r, 130, 240);
+    }
+    return trees;
+  }, []);
 
   return (
     <div
@@ -368,19 +317,6 @@ export const ForestCanopy: React.FC<ForestCanopyProps> = ({
           </linearGradient>
         </defs>
 
-        {/* ============================================================== */}
-        {/* LAYER 1: DISTANT HIGH FOOTHILL TREELINE (Background Canopy)    */}
-        {/* ============================================================== */}
-        <g fill={col.farCanopy} className="transition-colors duration-700 ease-out opacity-85">
-          {distantRidgePines.map((p, idx) => (
-            <path
-              key={`dist-${idx}`}
-              d={makeRealisticFir(p.x, 320, p.h, p.w, 0)}
-              className="transition-colors duration-700 ease-out"
-            />
-          ))}
-        </g>
-
         {/* Atmospheric Valley Mist drifting between distant and midground forest */}
         <rect
           x="-100"
@@ -421,8 +357,36 @@ export const ForestCanopy: React.FC<ForestCanopyProps> = ({
               <path
                 d={makeRealisticFir(p.x, 320, p.h, p.w, p.lean)}
                 fill="url(#foreTreeGrad)"
+                stroke={col.foreTrunks}
+                strokeWidth="1.2"
+                strokeOpacity="0.45"
                 className="transition-colors duration-700 ease-out"
               />
+              {/* Defined branches */}
+              {[0.35, 0.55, 0.75].map((r, bi) => (
+                <g key={`br-${bi}`}>
+                  <line
+                    x1={p.x + p.lean}
+                    y1={320 - p.h * r}
+                    x2={p.x + p.lean + p.w * 0.55}
+                    y2={320 - p.h * r + 6}
+                    stroke={col.foreTrunks}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    opacity="0.7"
+                  />
+                  <line
+                    x1={p.x + p.lean}
+                    y1={320 - p.h * r}
+                    x2={p.x + p.lean - p.w * 0.55}
+                    y2={320 - p.h * r + 6}
+                    stroke={col.foreTrunks}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    opacity="0.7"
+                  />
+                </g>
+              ))}
               {/* Sunlit Rim Needle Accents on Crown Tips */}
               <circle
                 cx={p.x + p.lean}
@@ -512,6 +476,33 @@ export const ForestCanopy: React.FC<ForestCanopyProps> = ({
             className="transition-colors duration-700 ease-out"
           />
         ))}
+
+        {/* Stone Walkway leading into the forest */}
+        <g className="transition-colors duration-700 ease-out">
+          <path
+            d="M 880 320 L 910 278 L 960 270 L 1010 278 L 1040 320 Z"
+            fill="#A8A29E"
+            opacity="0.85"
+          />
+          <path
+            d="M 880 320 L 910 278 L 960 270 L 1010 278 L 1040 320 Z"
+            fill="none"
+            stroke="#78716C"
+            strokeWidth="1.5"
+            opacity="0.6"
+          />
+          {[{ x: 900, y: 305 }, { x: 935, y: 288 }, { x: 960, y: 280 }, { x: 985, y: 288 }, { x: 1020, y: 305 }].map((s, idx) => (
+            <ellipse
+              key={`stone-${idx}`}
+              cx={s.x}
+              cy={s.y}
+              rx="9"
+              ry="5"
+              fill="#D6D3D1"
+              opacity="0.9"
+            />
+          ))}
+        </g>
 
         {/* Mossy Forest Bed Baseline */}
         <rect

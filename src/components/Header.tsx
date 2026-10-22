@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { Volume2, VolumeX, Sun, Moon } from 'lucide-react';
+import React from 'react';
+import { Sun, Moon } from 'lucide-react';
 import { DayPhase } from '../types/portfolio';
-import { toggleAudio, isAudioEnabled } from '../utils/audio';
 
 interface HeaderProps {
   timeString: string;
@@ -19,13 +18,6 @@ export const Header: React.FC<HeaderProps> = ({
   isNight,
   onNavigateProgress,
 }) => {
-  const [audioActive, setAudioActive] = useState<boolean>(isAudioEnabled());
-
-  const handleAudioToggle = () => {
-    const newState = toggleAudio();
-    setAudioActive(newState);
-  };
-
   const navLinks = [
     { label: 'Dawn', time: '7 AM', progress: 0 },
     { label: 'Morning', time: '8:30 AM', progress: 0.18 },
@@ -83,13 +75,9 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Zone 3: Dynamic 12-Hour Time & Sound Indicator */}
         <div className="flex items-center gap-2.5 shrink-0">
-          {/* Dynamic 12-Hour Pill Indicator */}
+          {/* Dynamic 12-Hour Time Display */}
           <div
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-mono tabular-nums transition-all ${
-              isNight
-                ? 'bg-slate-900/60 border-indigo-400/30 text-slate-100 shadow-xs'
-                : 'bg-white/60 border-amber-300/50 text-amber-950 shadow-xs'
-            }`}
+            className="flex items-center gap-2 text-xs font-mono tabular-nums transition-all"
             title="Current Narrative Time"
           >
             {isNight ? (
@@ -103,24 +91,6 @@ export const Header: React.FC<HeaderProps> = ({
             )}
             <span className="font-bold tracking-wide">{timeString}</span>
           </div>
-
-          {/* Sound Toggle */}
-          <button
-            onClick={handleAudioToggle}
-            className={`p-2 rounded-full border transition-colors cursor-pointer ${
-              isNight
-                ? 'bg-slate-900/50 border-white/10 text-slate-300 hover:text-white'
-                : 'bg-white/50 border-black/5 text-slate-700 hover:text-black'
-            }`}
-            title={audioActive ? 'Mute audio' : 'Enable audio'}
-            aria-label={audioActive ? 'Mute audio' : 'Enable audio'}
-          >
-            {audioActive ? (
-              <Volume2 className="w-3.5 h-3.5 text-emerald-500" />
-            ) : (
-              <VolumeX className="w-3.5 h-3.5 opacity-40" />
-            )}
-          </button>
         </div>
       </div>
     </header>

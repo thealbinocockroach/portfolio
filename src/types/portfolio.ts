@@ -1,12 +1,39 @@
 export type DayPhase = 'dawn' | 'morning' | 'midday' | 'golden' | 'night';
 
+export interface StarPoint {
+  key: string;
+  x: number; // percent
+  y: number; // percent
+  r: number; // px radius
+  o: number; // 0..1 opacity
+  twinkle: boolean;
+}
+
+export interface StarLine {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
+
 export interface DayTimeState {
   progress: number; // 0 to 1
   timeString: string; // e.g. "7:15 AM"
   phase: DayPhase;
   phaseLabel: string; // e.g. "Dawn / First Light"
   sunPosition: { x: number; y: number }; // normalized 0..100
-  sunAltitude: number; // in degrees
+  moonPosition: { x: number; y: number }; // normalized 0..100
+  sunAltitude: number; // in degrees (negative below horizon)
+  sunOpacity: number; // 0..1 horizon fade
+  moonOpacity: number; // 0..1 horizon fade
+  moonPhase: number; // 0..1 (0 new, 0.5 full)
+  moonIllumination: number; // 0..1
+  moonWaxing: boolean;
+  moonPhaseName: string;
+  sunriseString: string; // e.g. "6:32 AM"
+  sunsetString: string; // e.g. "7:48 PM"
+  starPoints: StarPoint[];
+  starLines: StarLine[];
   isNight: boolean;
   ambientTextColor: string;
 }

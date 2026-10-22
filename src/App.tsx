@@ -11,6 +11,16 @@ export default function App() {
     phase,
     phaseLabel,
     sunPosition,
+    moonPosition,
+    sunAltitude,
+    sunOpacity,
+    moonOpacity,
+    starPoints,
+    starLines,
+    moonPhase,
+    moonIllumination,
+    moonWaxing,
+    moonPhaseName,
     isNight,
     scrollToProgress,
   } = useDayCycle();
@@ -26,6 +36,16 @@ export default function App() {
         progress={progress}
         phase={phase}
         sunPosition={sunPosition}
+        moonPosition={moonPosition}
+        sunAltitude={sunAltitude}
+        sunOpacity={sunOpacity}
+        moonOpacity={moonOpacity}
+        starPoints={starPoints}
+        starLines={starLines}
+        moonPhase={moonPhase}
+        moonIllumination={moonIllumination}
+        moonWaxing={moonWaxing}
+        moonPhaseName={moonPhaseName}
         isNight={isNight}
       />
 

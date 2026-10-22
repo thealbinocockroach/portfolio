@@ -6,6 +6,7 @@ interface RealisticSunProps {
   progress: number;
   phase: DayPhase;
   sunPosition: { x: number; y: number };
+  sunAltitude: number;
   opacity: number;
   onInspect: (info: { title: string; subtitle: string; description: string; tag: string }) => void;
 }
@@ -14,6 +15,7 @@ export const RealisticSun: React.FC<RealisticSunProps> = ({
   progress,
   phase,
   sunPosition,
+  sunAltitude,
   opacity,
   onInspect,
 }) => {
@@ -43,7 +45,7 @@ export const RealisticSun: React.FC<RealisticSunProps> = ({
 
     onInspect({
       title: 'The Sun · Solar Core',
-      subtitle: `Solar Altitude: ${Math.round(Math.max(0, 90 - Math.abs(progress - 0.5) * 160))}° · Effective Temp: ${temp}`,
+      subtitle: `Solar Altitude: ${sunAltitude}° · Effective Temp: ${temp}`,
       description: `A G2V yellow-white main-sequence star. ${phaseDesc}`,
       tag: 'CELESTIAL LUMEN',
     });
