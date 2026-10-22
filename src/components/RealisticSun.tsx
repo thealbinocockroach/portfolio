@@ -95,7 +95,7 @@ export const RealisticSun: React.FC<RealisticSunProps> = ({
 
   return (
     <div
-      className="absolute transition-transform duration-200 ease-out pointer-events-auto cursor-pointer"
+      className="absolute transition-all duration-700 ease-out pointer-events-auto cursor-pointer"
       style={{
         left: `${sunPosition.x}%`,
         top: `${sunPosition.y}%`,
