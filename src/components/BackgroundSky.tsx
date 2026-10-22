@@ -3,6 +3,7 @@ import { DayPhase, StarPoint, StarLine } from '../types/portfolio';
 import { RealisticSun } from './RealisticSun';
 import { RealisticMoon } from './RealisticMoon';
 import { StarField } from './StarField';
+import { ForestScene } from './ForestScene';
 import { Modal } from './Modal';
 
 interface BackgroundSkyProps {
@@ -139,6 +140,9 @@ export const BackgroundSky: React.FC<BackgroundSkyProps> = ({
         moonPhaseName={moonPhaseName}
         onInspect={(info) => setInspectedEntity(info)}
       />
+
+      {/* Forest environment (fixed with the scene) — rendered above sun/moon so they sit behind trees */}
+      <ForestScene isNight={isNight} />
 
       {/* Inspector Modal for Landscape & Celestial Objects */}
       <Modal
